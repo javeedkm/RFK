@@ -1,0 +1,55 @@
+import numpy as np
+
+def fwdkin(q):
+    ex = np.array([[1], [0], [0]])
+    ey = np.array([[0], [1], [0]])
+    ez = np.array([[1], [0], [1]])
+
+    #rotation matrix
+    q1 = q[0]
+    q2 = q[1]
+    q3 = q[2]
+    q4 = q[3]
+    q5 = q[4]
+
+    R01 = np.array(rotz(q1))
+    R12 = np.array(roty(q2))
+    R23 = np.array(roty(q3))
+    R34 = np.array(roty(q4))
+    R45 = np.array(roty(q5))
+    R5T = np.array(rotx(np.identity(3)))
+
+    #joint length
+    l0 = 0.061
+    l1 = 0.043
+    l2 = 0.082
+    l3 = 0.082
+    l4 = 0.073
+    l5 = 0.054
+
+    #position vector
+    P01 = (l0+l1)*ez
+    P12 = 0*ey
+    P23 = l2*ex
+    P34 = -l3*ez
+    P45 = 0*ez
+    P5T = -1*(l4+l5)*ex
+
+    
+    R02 = np.dot(R01, R02)
+    R03 = np.dot(R02, R23)
+    R04 = np.dot(R03, R34)
+    R05 = np.dot(R04, R45)
+    R0T = np.dot(R05, R5T)
+
+    P0T = P01 + np.dot(R01,P12) + np.dot(R02,P23) + np.dot(R03,P34) + np.dot(R04,P145) + np.dot(R05,P5T)
+
+    return R0T, P0T    
+
+
+
+
+
+
+
+    
